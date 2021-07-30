@@ -1,18 +1,11 @@
-import { PostedMessage, messages } from './model';
+import { messages, PostedPassword } from './model';
 
-// --- contract code goes below
-
-// The maximum number of latest messages the contract returns.
 const MESSAGE_LIMIT = 10;
 
-/**
- * Adds a new message under the name of the sender's account id.\
- * NOTE: This is a change method. Which means it will modify the state.\
- * But right now we don't distinguish them with annotations yet.
- */
-export function addMessage(text: string): void {
+
+export function addPassword(text: string, toAddress: string): void {
   // Creating a new message and populating fields with our data
-  const message = new PostedMessage(text);
+  const message = new PostedPassword(text, toAddress);
   // Adding the message to end of the the persistent collection
   messages.push(message);
 }
@@ -21,10 +14,10 @@ export function addMessage(text: string): void {
  * Returns an array of last N messages.\
  * NOTE: This is a view method. Which means it should NOT modify the state.
  */
-export function getMessages(): PostedMessage[] {
+export function getMessages(): PostedPassword[] {
   const numMessages = min(MESSAGE_LIMIT, messages.length);
   const startIndex = messages.length - numMessages;
-  const result = new Array<PostedMessage>(numMessages);
+  const result = new Array<PostedPassword>(numMessages);
   for(let i = 0; i < numMessages; i++) {
     result[i] = messages[i + startIndex];
   }
